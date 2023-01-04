@@ -1,0 +1,33 @@
+{
+  "name": "raf_yonetimi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdnanFurkanAKTEMUR/raf_yonetimi.git"
+  },
+  "author": "adnan aktemur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdnanFurkanAKTEMUR/raf_yonetimi/issues"
+  },
+  "homepage": "https://github.com/AdnanFurkanAKTEMUR/raf_yonetimi#readme",
+  "dependencies": {
+    "apollo-server": "^3.11.1",
+    "apollo-server-errors": "^3.3.1",
+    "apollo-server-express": "^3.11.1",
+    "bcryptjs": "^2.4.3",
+    "cookie": "^0.5.0",
+    "cors": "^2.8.5",
+    "graphql": "^16.6.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.2",
+    "nodemon": "^2.0.20"
+  }
+}
