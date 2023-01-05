@@ -10,6 +10,7 @@ type Shelf {
     oem_no: String
     orjinal_no: String
     raf_no: Int
+    room_id: String
     active: Boolean
     created_at: String
     updated_at: String
@@ -17,11 +18,12 @@ type Shelf {
 
 input createInput {
     arac: String!
-    ozellik: String!
+    ozellik: String
     ozellik2: String
-    oem_no: String!
-    orjinal_no: String!
-    raf_no: Int!
+    oem_no: String
+    orjinal_no: String
+    raf_no: Int
+    room_id: String
 }
 
 input updateInput {
@@ -32,6 +34,7 @@ input updateInput {
     oem_no: String
     orjinal_no: String
     raf_no: Int
+    room_id: String
 }
 
 input getShelfInput {
@@ -40,7 +43,7 @@ input getShelfInput {
 
 type Query {
     getAllShelfs: [Shelf]
-    getShelf(input: getShelfInput): Shelf
+    getShelf(input: getShelfInput!): Shelf
 }
 
 type Mutation {
