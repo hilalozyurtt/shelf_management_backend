@@ -16,7 +16,16 @@ type Shelf {
 }
 
 input createInput {
-    name: String!
+    arac: String!
+    ozellik: String!
+    ozellik2: String
+    oem_no: String!
+    orjinal_no: String!
+    raf_no: Int!
+}
+
+input updateInput {
+    _id: String!
     arac: String
     ozellik: String
     ozellik2: String
@@ -24,6 +33,7 @@ input createInput {
     orjinal_no: String
     raf_no: Int
 }
+
 input getShelfInput {
     _id: String  
 }
@@ -35,5 +45,7 @@ type Query {
 
 type Mutation {
     createShelf(input: createInput!): Shelf
+    updateShelf(input: updateInput!): Shelf
+    deleteShelf(input: getShelfInput!): Shelf
 }
 `;
