@@ -4,37 +4,25 @@ module.exports = gql`
 
 type Shelf {
     _id: String
-    arac: String
-    ozellik: String
-    ozellik2: String
-    oem_no: String
-    orjinal_no: String
-    raf_no: Int
-    room_id: String
+    raf_no: String
+    room_no: String
+    structure_no: String
     active: Boolean
     created_at: String
     updated_at: String
 }
 
 input createInput {
-    arac: String!
-    ozellik: String
-    ozellik2: String
-    oem_no: String
-    orjinal_no: String
-    raf_no: Int
-    room_id: String
+    raf_no: String
+    room_no: String
+    structure_no: String
 }
 
 input updateInput {
     _id: String!
-    arac: String
-    ozellik: String
-    ozellik2: String
-    oem_no: String
-    orjinal_no: String
-    raf_no: Int
-    room_id: String
+    raf_no: String
+    room_no: String
+    structure_no: String
 }
 
 input getShelfInput {

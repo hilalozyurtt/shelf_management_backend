@@ -27,12 +27,8 @@ module.exports = {
       try {
         const shelf = await Shelf.create({
           arac: input?.arac,
-          ozellik: input?.ozellik,
-          ozellik2: input?.ozellik2,
-          oem_no: input?.oem_no,
-          orjinal_no: input?.orjinal_no,
           raf_no: input?.raf_no,
-          room_id: input?.room_id,
+          room_no: input?.room_no,
           active: true,
           created_at: new Date(),
           updated_at: new Date()
@@ -48,12 +44,9 @@ module.exports = {
         const shelf = await Shelf.updateOne({ _id: input?._id, active: true }, {
           $set: {
             arac: input?.arac,
-            ozellik: input?.ozellik,
-            ozellik2: input?.ozellik2,
-            oem_no: input?.oem_no,
-            orjinal_no: input?.orjinal_no,
             raf_no: input?.raf_no,
-            room_id: input?.room_id,
+            room_no: input?.room_no,
+            structure_no: input?.structure_no,
             updated_at: new Date()
           }
         })
