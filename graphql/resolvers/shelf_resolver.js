@@ -52,16 +52,15 @@ module.exports = {
       } catch (e) {
         return new GraphQLError('Hata oluştu')
       }
+    },
+    deleteShelf: async (_, { input }) => {
+      try {
+        const shelf = await Shelf.updateOne({ _id: input._id, active: true }, { $set: { active: false, updated_at: new Date() } })
+        return shelf
+      } catch (e) {
+        return new GraphQLError('Hata oluştu')
+      }
+  
     }
-
-  },
-  deleteShelf: async (_, { input }) => {
-    try {
-      const shelf = await Shelf.updateOne({ _id: input._id, active: true }, { $set: { active: false, updated_at: new Date() } })
-      return shelf
-    } catch (e) {
-      return new GraphQLError('Hata oluştu')
-    }
-
   }
 }
