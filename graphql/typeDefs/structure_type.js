@@ -27,7 +27,7 @@ module.exports = gql`
     getAllStructures: [Structure]
   }
 
-  type Query {
+  type Mutation {
     createStructure(input: createStructureInput!): Structure
     updateStructure(input: updateStructureInput!): Structure
     deleteStructure(input: deleteStructureInput!): Structure

@@ -2,7 +2,6 @@ const {model , Schema } = require('mongoose')
 
 const shelfSchema = new Schema({
   raf_no: String,
-  room_no: String,
   structure_no: String,
   active: Boolean,
   created_at: String,

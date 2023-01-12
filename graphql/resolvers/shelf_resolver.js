@@ -28,7 +28,6 @@ module.exports = {
         const shelf = await Shelf.create({
           arac: input?.arac,
           raf_no: input?.raf_no,
-          room_no: input?.room_no,
           active: true,
           created_at: new Date(),
           updated_at: new Date()
@@ -45,7 +44,6 @@ module.exports = {
           $set: {
             arac: input?.arac,
             raf_no: input?.raf_no,
-            room_no: input?.room_no,
             structure_no: input?.structure_no,
             updated_at: new Date()
           }

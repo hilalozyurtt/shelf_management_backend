@@ -3,7 +3,7 @@ const Product = require('../../models/Product')
 
 module.exports = {
 	Query: {
-		getAllProduct: async () => {
+		getAllProducts: async () => {
 			try {
 				const allProducts = await Product.find({ active: true })
 				return allProducts

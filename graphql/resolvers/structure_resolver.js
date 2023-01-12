@@ -1,5 +1,6 @@
 const Structure = require("../../models/Structure")
-import { GraphQLError } from 'graphql';
+const { GraphQLError } = require('graphql')
+
 module.exports = {
   Query: {
     getStructure: async (_,{ input }) => {
@@ -10,7 +11,7 @@ module.exports = {
         return new GraphQLError("İstediğiniz Bina bulunamadı")
       }
     },
-    getAllStructure: async (_, { input }) => {
+    getAllStructures: async (_, { input }) => {
       try{
         const allStructure = await Structure.find({active: true})
         return allStructure
