@@ -28,6 +28,7 @@ module.exports = {
         const shelf = await Shelf.create({
           arac: input?.arac,
           raf_no: input?.raf_no,
+          structure_no: input?.structure_no,
           active: true,
           created_at: new Date(),
           updated_at: new Date()

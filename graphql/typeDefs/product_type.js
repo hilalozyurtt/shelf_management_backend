@@ -4,6 +4,7 @@ module.exports = gql`
 
 type Product {
     _id: String
+    shelf_id: String
     name: String
     arac: String
     ozellik: String
@@ -19,8 +20,9 @@ type Product {
     updated_at: String
 }
 
-input createInput {
+input createProductInput {
     name: String!
+    shelf_id: String!
     arac: String
     ozellik: String
     ozellik2: String
@@ -33,8 +35,9 @@ input createInput {
 
 }
 
-input updateInput {
+input updateProductInput {
     _id: String!
+    shelf_id: String!
     name: String
     arac: String
     ozellik: String
@@ -65,8 +68,8 @@ type Query {
 }
 
 type Mutation {
-    createProduct(input: createInput!): Product
-    updateProduct(input: updateInput!): Product
+    createProduct(input: createProductInput!): Product
+    updateProduct(input: updateProductInput!): Product
     deleteProduct(input: deleteInput!): Product
 }
 `

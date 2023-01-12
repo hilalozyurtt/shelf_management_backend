@@ -11,12 +11,12 @@ type Shelf {
     updated_at: String
 }
 
-input createInput {
+input createShelfInput {
     raf_no: String
     structure_no: String
 }
 
-input updateInput {
+input updateShelfInput {
     _id: String!
     raf_no: String
     structure_no: String
@@ -32,8 +32,8 @@ type Query {
 }
 
 type Mutation {
-    createShelf(input: createInput!): Shelf
-    updateShelf(input: updateInput!): Shelf
+    createShelf(input: createShelfInput!): Shelf
+    updateShelf(input: updateShelfInput!): Shelf
     deleteShelf(input: getShelfInput!): Shelf
 }
 `;
