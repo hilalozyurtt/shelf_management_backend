@@ -1,5 +1,5 @@
 const Room = require("../../models/Room")
-import { GraphQLError } from 'graphql';
+const { GraphQLError } = require('graphql')
 
 module.exports = {
   Query: {

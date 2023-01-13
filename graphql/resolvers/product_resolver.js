@@ -1,5 +1,6 @@
 const { GraphqlError } = require('graphql')
 const Product = require('../../models/Product')
+const Shelf = require('../../models/Shelf')
 
 module.exports = {
 	Query: {
@@ -19,6 +20,31 @@ module.exports = {
 			} catch (e) {
 				return new GraphqlError("Aradığınız ürün bulunamadı.")
 			}
+		},
+
+		getProductsOfShelf: async (_, { input }) => {
+			try{
+				const products = await Product.find({shelf_id: input?.shelf_id, active: true})
+				return products
+			} catch(e) {
+				return new GraphqlError("Parametreler hatalı.")
+			}
+		},
+
+		getProductsOfStructure: async (_, { input }) => {
+			try{
+				const shelfs = await Shelf.find({ active: true, structure_id:input?.structure_id })
+				let products = []
+				await Promise.all(shelfs.map(async (s)=>{
+					const productsOfShelf = await Product.find({ active: true, shelf_id:s._id.toString() })
+					productsOfShelf.map((p)=>{
+						products.push(p)
+					})
+				}))
+				return products
+			} catch(e){
+				return new GraphqlError("Parametreler hatalı.")
+			}
 		}
 	},
 
@@ -32,10 +58,6 @@ module.exports = {
 					ozellik2: input?.ozellik2,
 					oem_no: input?.oem_no,
 					orjinal_no: input?.orjinal_no,
-					ek_alan_1: input?.ek_alan_1,
-					ek_alan_2: input?.ek_alan_2,
-					ek_alan_3: input?.ek_alan_3,
-					ek_alan_4: input?.ek_alan_4,
 					shelf_id: input?.shelf_id,
 					active: true,
 					created_at: new Date(),
@@ -56,10 +78,6 @@ module.exports = {
 						ozellik2: input?.ozellik2,
 						oem_no: input?.oem_no,
 						orjinal_no: input?.orjinal_no,
-						ek_alan_1: input?.ek_alan_1,
-						ek_alan_2: input?.ek_alan_2,
-						ek_alan_3: input?.ek_alan_3,
-						ek_alan_4: input?.ek_alan_4,
 						shelf_id: input?.shelf_id,
 						updated_at: new Date()
 					}
