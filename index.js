@@ -15,7 +15,7 @@ const schema = require("./graphql/schema");
   };
   app.use(cors(corsOptions));
 
-  const server = new ApolloServer({
+  const apolloServer = new ApolloServer({
     schema: schema,
     context: ({ req, res }) => ({
       req,
@@ -23,13 +23,13 @@ const schema = require("./graphql/schema");
     }),
   });
 
-  await server.start();
+  await apolloServer.start();
   console.log("apollo server started");
 
-  server.applyMiddleware({ app, path: "/graphql", cors: false });
+  apolloServer.applyMiddleware({ app, path: "/", cors: false });
   console.log("middle ware apllied succesfuly");
 
   app.listen({ port: 4000 }, () => {
-    console.log("server is ready on port 4000/graphql");
+    console.log("server is ready on port 4000");
   });
 })();

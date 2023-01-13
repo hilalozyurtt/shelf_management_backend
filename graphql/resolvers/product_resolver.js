@@ -31,8 +31,9 @@ module.exports = {
 			}
 		},
 
-		getProductsOfStructure: async (_, { input }) => {
+		getProductsOfStructure: async (_, { input }, { res }) => {
 			try{
+				console.log(res);
 				const shelfs = await Shelf.find({ active: true, structure_id:input?.structure_id })
 				let products = []
 				await Promise.all(shelfs.map(async (s)=>{
