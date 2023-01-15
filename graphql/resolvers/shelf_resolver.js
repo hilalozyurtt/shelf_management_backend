@@ -28,7 +28,7 @@ module.exports = {
         const shelf = await Shelf.create({
           arac: input?.arac,
           raf_no: input?.raf_no,
-          structure_no: input?.structure_no,
+          structure_id: input?.structure_id,
           active: true,
           created_at: new Date(),
           updated_at: new Date()
@@ -45,7 +45,7 @@ module.exports = {
           $set: {
             arac: input?.arac,
             raf_no: input?.raf_no,
-            structure_no: input?.structure_no,
+            structure_id: input?.structure_id,
             updated_at: new Date()
           }
         })
@@ -61,7 +61,6 @@ module.exports = {
       } catch (e) {
         return new GraphQLError('Hata oluştu')
       }
-  
     }
   }
 }

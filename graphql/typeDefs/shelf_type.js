@@ -13,7 +13,7 @@ type Shelf {
 
 input createShelfInput {
     raf_no: String
-    structure_no: String
+    structure_id: String
 }
 
 input updateShelfInput {
