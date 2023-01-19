@@ -1,9 +1,12 @@
 const Structure = require("../../models/Structure")
 const { GraphQLError } = require('graphql')
+const SystemLog = require("../../models/System_log")
+const cookie = require('cookie');
+const jwt = require('jsonwebtoken')
 
 module.exports = {
   Query: {
-    getStructure: async (_,{ input }) => {
+    getStructure: async (_,{ input }, {req}) => {
       try{
         const structure = await Structure.findOne({_id:input._id, active: true})
         return structure

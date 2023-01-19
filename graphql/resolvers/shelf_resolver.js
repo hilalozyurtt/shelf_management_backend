@@ -1,9 +1,12 @@
 const { GraphQLError } = require("graphql")
 const Shelf = require("../../models/Shelf")
+const SystemLog = require("../../models/System_log")
+const cookie = require('cookie');
+const jwt = require('jsonwebtoken')
 
 module.exports = {
   Query: {
-    getAllShelfs: async () => {
+    getAllShelfs: async (_, __, {req}) => {
       try {
         const allShelfs = await Shelf.find({ active: true })
         return allShelfs
