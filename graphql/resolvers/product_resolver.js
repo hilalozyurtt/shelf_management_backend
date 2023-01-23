@@ -67,22 +67,25 @@ module.exports = {
 					created_at: new Date(),
 					updated_at: new Date()
 				})
-				const cookies = cookie.parse(req.headers.cookie)
-				if (cookies.token != "") {
-					const user = jwt.verify(cookies.token, "UNSAFE_STRING")
-					await SystemLog.create({
-						action: "Ürün Oluşturma",
-						changed_id: createdProduct._id,
-						changed_value: createdProduct.name,
-						created_at: new Date(),
-						updated_at: new Date(),
-						user_id: user.user_id,
-						user_name: user.username
-					})
+				if (req.headers.cookie) {
+					const cookies = cookie.parse(req.headers.cookie)
+					if (cookies.token != "") {
+						const user = jwt.verify(cookies.token, "UNSAFE_STRING")
+						await SystemLog.create({
+							action: "Ürün Oluşturma",
+							changed_id: createdProduct._id,
+							changed_value: createdProduct.name,
+							created_at: new Date(),
+							updated_at: new Date(),
+							user_id: user.user_id,
+							user_name: user.username
+						})
+					}
 				}
+
 				return createdProduct
 			} catch (e) {
-				return new GraphqlError("Ürün oluşturulması başarısız.")
+				return new GraphqlError("Ürün oluşturulması başarısız.", "ürün oluşturalamadı")
 			}
 		},
 		updateProduct: async (_, { input }, { req }) => {
@@ -99,22 +102,24 @@ module.exports = {
 						updated_at: new Date()
 					}
 				})
-				const cookies = cookie.parse(req.headers.cookie)
-				if (cookies.token != "") {
-					const user = jwt.verify(cookies.token, "UNSAFE_STRING")
-					await SystemLog.create({
-						action: "Ürün Güncelleme",
-						changed_id: updateProduct._id,
-						changed_value: updateProduct.name,
-						created_at: new Date(),
-						updated_at: new Date(),
-						user_id: user.user_id,
-						user_name: user.username
-					})
+				if (req.headers.cookie) {
+					const cookies = cookie.parse(req.headers.cookie)
+					if (cookies.token != "") {
+						const user = jwt.verify(cookies.token, "UNSAFE_STRING")
+						await SystemLog.create({
+							action: "Ürün Güncelleme",
+							changed_id: updateProduct._id,
+							changed_value: updateProduct.name,
+							created_at: new Date(),
+							updated_at: new Date(),
+							user_id: user.user_id,
+							user_name: user.username
+						})
+					}
 				}
 				return updateProduct
 			} catch (e) {
-				return new GraphqlError("Güncelleme olurken bir hata oldu.")
+				return new GraphqlError("Güncelleme yapılırken bir hata oldu.","Güncelleme yapılırken bir hata oldu.")
 			}
 		},
 		deleteProduct: async (_, { input }, { req }) => {
@@ -124,23 +129,25 @@ module.exports = {
 						active: false
 					}
 				})
-				const product = await Product.findOne({_id:input._id})
-				const cookies = cookie.parse(req.headers.cookie)
-				if (cookies.token != "") {
-					const user = jwt.verify(cookies.token, "UNSAFE_STRING")
-					await SystemLog.create({
-						action: "Ürün Silme",
-						changed_id: input._id,
-						changed_value: product.name,
-						created_at: new Date(),
-						updated_at: new Date(),
-						user_id: user.user_id,
-						user_name: user.username
-					})
+				const product = await Product.findOne({ _id: input._id })
+				if (req.headers.cookie) {
+					const cookies = cookie.parse(req.headers.cookie)
+					if (cookies.token != "") {
+						const user = jwt.verify(cookies.token, "UNSAFE_STRING")
+						await SystemLog.create({
+							action: "Ürün Silme",
+							changed_id: product._id,
+							changed_value: product.name,
+							created_at: new Date(),
+							updated_at: new Date(),
+							user_id: user.user_id,
+							user_name: user.username
+						})
+					}
 				}
 				return deletedProduct
 			} catch (e) {
-				return new GraphqlError("Silinemedi.")
+				return new GraphqlError("Silinemedi.", "silinemedi")
 			}
 		}
 	}
