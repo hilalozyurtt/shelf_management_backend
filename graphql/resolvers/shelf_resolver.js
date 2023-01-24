@@ -1,8 +1,6 @@
 const { GraphQLError } = require("graphql")
 const Shelf = require("../../models/Shelf")
-const SystemLog = require("../../models/System_log")
-const cookie = require('cookie');
-const jwt = require('jsonwebtoken')
+const createLog = require('../system_log_function')
 
 module.exports = {
   Query: {
@@ -26,7 +24,7 @@ module.exports = {
   },
 
   Mutation: {
-    createShelf: async (_, { input }) => {
+    createShelf: async (_, { input }, { req }) => {
       try {
         const shelf = await Shelf.create({
           arac: input?.arac,
@@ -37,14 +35,16 @@ module.exports = {
           updated_at: new Date()
         })
 
+        await createLog(req.headers,"Raf Oluşturma",shelf._id,shelf.raf_no)
+
         return shelf
       } catch (e) {
         return new GraphQLError('Hata oluştu. Lütfen değerlerinizi kontrol edin.')
       }
     },
-    updateShelf: async (_, { input }) => {
+    updateShelf: async (_, { input }, { req }) => {
       try {
-        const shelf = await Shelf.updateOne({ _id: input?._id, active: true }, {
+        const shelf = await Shelf.findOneAndUpdate({ _id: input?._id, active: true }, {
           $set: {
             arac: input?.arac,
             raf_no: input?.raf_no,
@@ -52,14 +52,17 @@ module.exports = {
             updated_at: new Date()
           }
         })
+        await createLog(req.headers,"Raf Güncelleme",shelf._id,shelf.raf_no)
         return shelf
       } catch (e) {
         return new GraphQLError('Hata oluştu')
       }
     },
-    deleteShelf: async (_, { input }) => {
+    deleteShelf: async (_, { input }, { req }) => {
       try {
-        const shelf = await Shelf.updateOne({ _id: input._id, active: true }, { $set: { active: false, updated_at: new Date() } })
+        const shelf = await Shelf.findOneAndUpdate({ _id: input._id, active: true }, { $set: { active: false, updated_at: new Date() } })
+        await createLog(req.headers,"Raf Silme",shelf._id,shelf.raf_no)
+
         return shelf
       } catch (e) {
         return new GraphQLError('Hata oluştu')

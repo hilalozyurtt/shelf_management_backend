@@ -6,8 +6,7 @@ const systemLogSchema = new Schema({
     changed_value: String,
     changed_id: String,
     action: String,
-    created_at: String,
-    updated_at: String
+    created_at: String
 });
 
 module.exports = model('System_log', systemLogSchema);

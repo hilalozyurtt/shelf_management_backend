@@ -1,9 +1,6 @@
 const Structure = require("../../models/Structure")
 const { GraphQLError } = require('graphql')
-const SystemLog = require("../../models/System_log")
-const cookie = require('cookie');
-const jwt = require('jsonwebtoken')
-
+const createLog = require('../system_log_function')
 module.exports = {
   Query: {
     getStructure: async (_,{ input }, {req}) => {
@@ -25,7 +22,7 @@ module.exports = {
   },
 
   Mutation: {
-    createStructure: async (_, { input }) => {
+    createStructure: async (_, { input }, { req }) => {
       try{
         const createdStructure = await Structure.create({
           bina_no: input?.bina_no,
@@ -33,12 +30,13 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date()
         })
+        await createLog(req.headers,"Bina Oluşturma",createdStructure._id,createdStructure.bina_no)
         return createdStructure
       }catch(e){
         return new GraphQLError("Bina oluşturması başarısız. Lütfen doğru bilgileri girdiğinizden emin olun.")
       }
     },
-    updateStructure: async (_, { input }) => {
+    updateStructure: async (_, { input }, { req }) => {
       try{
         const updatedStructure = await Structure.findOneAndUpdate(
           {_id: input?._id, active: true},
@@ -48,12 +46,13 @@ module.exports = {
             }
           }
         )
+        await createLog(req.headers,"Bina Güncelleme",updatedStructure._id,updatedStructure.bina_no)
         return updatedStructure
       }catch(e){
         return new GraphQLError("Güncelleme başarısız. Lütfen bilgileri kontrol ediniz.")
       }
     },
-    deleteStructure: async (_, { input }) => {
+    deleteStructure: async (_, { input }, { req }) => {
       try{
         const deletedStructure = await Structure.findOneAndUpdate(
           {_id:input._id, active: true},
@@ -62,6 +61,7 @@ module.exports = {
             updated_at: new Date()
           }}
         )
+        await createLog(req.headers,"Bina Silme",deletedStructure._id,deletedStructure.bina_no)
         return deletedStructure
       }catch(e){
         return new GraphQLError("Silme başarısız oldu.")

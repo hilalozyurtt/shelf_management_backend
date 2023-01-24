@@ -8,14 +8,9 @@ module.exports = gql`
     changed_id: String
     action: String
     created_at: String
-    updated_at: String
   }
   input getSystemLogInput {
     _id: String
-  }
-
-  input createSystemLogInput {
-    bina_no: String!
   }
 
   type Query {

@@ -14,7 +14,6 @@ module.exports = {
     getAllSystemLogs: async (_, { input }) => {
       try{
         const allSystemLog = await SystemLog.find()
-        console.log(allSystemLog);
         return allSystemLog
       }catch(e){
         return new GraphQLError("Kayıtlar getirilemedi", "Kayıtlar getirilemedi")

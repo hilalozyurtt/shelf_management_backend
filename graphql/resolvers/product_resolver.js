@@ -1,9 +1,7 @@
 const { GraphqlError } = require('graphql')
 const Product = require('../../models/Product')
 const Shelf = require('../../models/Shelf')
-const SystemLog = require("../../models/System_log")
-const cookie = require('cookie');
-const jwt = require('jsonwebtoken')
+const createLog = require('../system_log_function')
 
 module.exports = {
 	Query: {
@@ -34,9 +32,8 @@ module.exports = {
 			}
 		},
 
-		getProductsOfStructure: async (_, { input }, { res }) => {
+		getProductsOfStructure: async (_, { input }, { req }) => {
 			try {
-				console.log(res);
 				const shelfs = await Shelf.find({ active: true, structure_id: input?.structure_id })
 				let products = []
 				await Promise.all(shelfs.map(async (s) => {
@@ -65,23 +62,9 @@ module.exports = {
 					shelf_id: input?.shelf_id,
 					active: true,
 					created_at: new Date(),
-					updated_at: new Date()
+
 				})
-				if (req.headers.cookie) {
-					const cookies = cookie.parse(req.headers.cookie)
-					if (cookies.token != "") {
-						const user = jwt.verify(cookies.token, "UNSAFE_STRING")
-						await SystemLog.create({
-							action: "Ürün Oluşturma",
-							changed_id: createdProduct._id,
-							changed_value: createdProduct.name,
-							created_at: new Date(),
-							updated_at: new Date(),
-							user_id: user.user_id,
-							user_name: user.username
-						})
-					}
-				}
+				await createLog(req.headers,"Ürün Oluşturma",createdProduct._id,createdProduct.name)
 
 				return createdProduct
 			} catch (e) {
@@ -90,7 +73,7 @@ module.exports = {
 		},
 		updateProduct: async (_, { input }, { req }) => {
 			try {
-				const updateProduct = await Product.updateOne({ _id: input?._id, active: true }, {
+				const updateProduct = await Product.findOneAndUpdate({ _id: input?._id, active: true }, {
 					$set: {
 						name: input?.name,
 						arac: input?.arac,
@@ -102,21 +85,9 @@ module.exports = {
 						updated_at: new Date()
 					}
 				})
-				if (req.headers.cookie) {
-					const cookies = cookie.parse(req.headers.cookie)
-					if (cookies.token != "") {
-						const user = jwt.verify(cookies.token, "UNSAFE_STRING")
-						await SystemLog.create({
-							action: "Ürün Güncelleme",
-							changed_id: updateProduct._id,
-							changed_value: updateProduct.name,
-							created_at: new Date(),
-							updated_at: new Date(),
-							user_id: user.user_id,
-							user_name: user.username
-						})
-					}
-				}
+				
+				await createLog(req.headers,"Ürün Güncelleme",updateProduct._id,updateProduct.name)
+
 				return updateProduct
 			} catch (e) {
 				return new GraphqlError("Güncelleme yapılırken bir hata oldu.","Güncelleme yapılırken bir hata oldu.")
@@ -124,27 +95,13 @@ module.exports = {
 		},
 		deleteProduct: async (_, { input }, { req }) => {
 			try {
-				const deletedProduct = await Product.updateOne({ _id: input?._id, active: true }, {
+				const deletedProduct = await Product.findOneAndUpdate({ _id: input?._id, active: true }, {
 					$set: {
 						active: false
 					}
 				})
-				const product = await Product.findOne({ _id: input._id })
-				if (req.headers.cookie) {
-					const cookies = cookie.parse(req.headers.cookie)
-					if (cookies.token != "") {
-						const user = jwt.verify(cookies.token, "UNSAFE_STRING")
-						await SystemLog.create({
-							action: "Ürün Silme",
-							changed_id: product._id,
-							changed_value: product.name,
-							created_at: new Date(),
-							updated_at: new Date(),
-							user_id: user.user_id,
-							user_name: user.username
-						})
-					}
-				}
+				await createLog(req.headers,"Ürün Güncelleme",deletedProduct._id,deletedProduct.name)
+
 				return deletedProduct
 			} catch (e) {
 				return new GraphqlError("Silinemedi.", "silinemedi")
