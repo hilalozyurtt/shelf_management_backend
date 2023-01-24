@@ -21,11 +21,10 @@ input RegisterInput{
 }
 
 input UpdateStInput{
+    _id: String!
     username: String!
     usersurname: String!
     phone: String
-    password: String!
-    confirmPassword: String!
 }
 
 input LoginInput{
@@ -33,8 +32,12 @@ input LoginInput{
     password: String!
 }
 
+input getUserInput {
+    _id: String!
+}
+
 type Query {
-    user(id: ID!): User
+    user(input: getUserInput!): User
     logout: String
     checkToken: User
 }

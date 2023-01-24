@@ -8,28 +8,26 @@ module.exports = {
   Mutation: {
 
     async updateUser(_, { input }, { req }){
+      console.log(input);
       const oldUser = await User.findOne({username: input?.username})
       let user = ""
-      if(reqHeaders.cookie){
-        const cookies = cookie.parse(reqHeaders.cookie)
+      if(req.headers.cookie){
+        const cookies = cookie.parse(req.headers.cookie)
         if(cookies.token != ""){
           user = jwt.verify(cookies.token, "UNSAFE_STRING")
         }
       }
       if(oldUser && oldUser._id != user.user_id) return new ApolloError("Bu isim kullanılmış", "Bu isim kullanılmış")
-      if(input?.password != input?.confirmPassword) return new ApolloError("Parolalar eşleşmiyor.","Parolalar eşleşmiyor.")
-      const enPass = await bcrypt.hash(input?.password, 10)
       const updatedUser = await User.findOneAndUpdate({
         _id: input._id
       }, {$set:{
         username: input?.username,
         usersurname: input?.usersurname,
-        password: enPass,
         phone: input?.phone
       }})
 
       await createLog(req.headers, "Kullanıcı Güncelleme", updatedUser._id, updatedUser.username)
-
+      console.log(updatedUser);
       return updatedUser
     },
 
@@ -87,7 +85,7 @@ module.exports = {
     }
   },
   Query: {
-    user: (_, { ID }) => User.findById(ID),
+    user: async (_, { input }) => await User.findById(input?._id),
     logout: async (_, __, { res, req }) => {
       await res.cookie("token", "", { httpOnly: true, secure: true })
       await createLog(req.headers, "Kullanıcı Çıkışı")
