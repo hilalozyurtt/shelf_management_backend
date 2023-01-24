@@ -16,8 +16,16 @@ const createLog = async (reqHeaders, action, changed_id, changed_value )=>{
         user_name: user.username
       })
     }
-  }else{
-    //giriş yapılmamış
+  }else if(action == "Kullanıcı Girişi"){
+    const user = jwt.verify(reqHeaders, "UNSAFE_STRING")
+    await SystemLog.create({
+      action: action,
+      changed_id: changed_id,
+      changed_value: changed_value,
+      created_at: new Date(),
+      user_id: user.user_id,
+      user_name: user.username
+    })
   }
 }
 module.exports = createLog

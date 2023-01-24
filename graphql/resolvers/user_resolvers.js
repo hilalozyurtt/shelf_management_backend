@@ -49,7 +49,7 @@ module.exports = {
             await res.cookie("token",token,{ httpOnly: true, secure: true})
             user.token = token
 
-            await createLog(req.headers,"Kullanıcı Girişi")
+            await createLog(token,"Kullanıcı Girişi")
             return {
               id:user.id,
               ...user._doc
