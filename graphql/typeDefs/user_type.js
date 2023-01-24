@@ -5,7 +5,6 @@ type User {
     _id: String
     username: String
     usersurname: String
-    email: String
     phone: String
     role: String
     password: String
@@ -15,7 +14,6 @@ type User {
 input RegisterInput{
     username: String!
     usersurname: String!
-    email: String!
     phone: String
     role: String
     password: String!
@@ -23,7 +21,7 @@ input RegisterInput{
 }
 
 input LoginInput{
-    email: String!
+    username: String!
     password: String!
 }
 

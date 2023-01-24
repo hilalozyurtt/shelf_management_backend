@@ -3,11 +3,11 @@ const { ApolloError } = require("apollo-server-errors")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const cookie = require('cookie')
-
+const createLog = require('../system_log_function')
 module.exports = {
     Mutation: {
-        async registerUser(_, {input} ) {
-            const oldUser = await User.findOne({email: input?.email})
+        async registerUser(_, {input}, { req } ) {
+            const oldUser = await User.findOne({username: input?.username})
             if(oldUser){
               throw new ApolloError(' User is already exist', 'user var')
             }
@@ -17,13 +17,13 @@ module.exports = {
               usersurname: input?.usersurname,
               role: input?.role,
               phone: input?.phone,
-              email: input?.email.toLowerCase(),
+              //email: input?.email.toLowerCase(),
               password: enPass
             })
 
             const token = jwt.sign({
               user_id: newUser._id,
-              email: newUser.email, 
+              //email: newUser.email, 
               username: newUser.username, 
               usersurname: newUser.usersurname, 
               role: newUser.role
@@ -31,23 +31,25 @@ module.exports = {
             newUser.token = token
 
             const res = await newUser.save()
+            await createLog(req.headers,"Kullanıcı oluşturma",res._id,res.username)
             return {
               id: res.id,
               ...res._doc
             }
         },
         async loginUser(_, { input }, { res, req }){
-          const user = await User.findOne({email: input?.email})
+          const user = await User.findOne({username: input?.username})
           if(user && (bcrypt.compare(input?.password, user.password))){
             const token = jwt.sign({
               user_id: user._id,
-              email: user.email, 
               username: user.username, 
               usersurname: user.usersurname, 
               role: user.role
             },"UNSAFE_STRING",{expiresIn:"2h"})
             await res.cookie("token",token,{ httpOnly: true, secure: true})
             user.token = token
+
+            await createLog(req.headers,"Kullanıcı Girişi")
             return {
               id:user.id,
               ...user._doc
@@ -61,6 +63,7 @@ module.exports = {
         user: (_, {ID}) => User.findById(ID),
         logout:async (_, __, {res, req}) => {
           await res.cookie("token","", { httpOnly: true, secure: true })
+          await createLog(req.headers,"Kullanıcı Çıkışı")
           return "logout"
         },
         checkToken:async (_,__,{res, req}) => {
