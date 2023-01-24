@@ -20,6 +20,14 @@ input RegisterInput{
     confirmPassword: String!
 }
 
+input UpdateStInput{
+    username: String!
+    usersurname: String!
+    phone: String
+    password: String!
+    confirmPassword: String!
+}
+
 input LoginInput{
     username: String!
     password: String!
@@ -34,5 +42,6 @@ type Query {
 type Mutation {
     registerUser(input: RegisterInput): User
     loginUser(input: LoginInput): User
+    updateUser(input: UpdateStInput): User
 }
 `
