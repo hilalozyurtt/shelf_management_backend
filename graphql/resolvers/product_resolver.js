@@ -100,7 +100,7 @@ module.exports = {
 						active: false
 					}
 				})
-				await createLog(req.headers,"Ürün Güncelleme",deletedProduct._id,deletedProduct.name)
+				await createLog(req.headers,"Ürün Silme",deletedProduct._id,deletedProduct.name)
 
 				return deletedProduct
 			} catch (e) {
