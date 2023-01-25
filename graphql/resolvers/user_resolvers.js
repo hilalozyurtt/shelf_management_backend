@@ -7,24 +7,26 @@ const createLog = require('../system_log_function')
 module.exports = {
   Mutation: {
 
-    async updateUser(_, { input }, { req }){
-      console.log(input);
-      const oldUser = await User.findOne({username: input?.username})
+    async updateUser(_, { input }, { req }) {
+
+      const oldUser = await User.findOne({ username: input?.username })
       let user = ""
-      if(req.headers.cookie){
+      if (req.headers.cookie) {
         const cookies = cookie.parse(req.headers.cookie)
-        if(cookies.token != ""){
+        if (cookies.token != "") {
           user = jwt.verify(cookies.token, "UNSAFE_STRING")
         }
       }
-      if(oldUser && oldUser._id != user.user_id) return new ApolloError("Bu isim kullanılmış", "Bu isim kullanılmış")
+      if (oldUser && oldUser._id != user.user_id) return new ApolloError("Bu isim kullanılmış", "Bu isim kullanılmış")
       const updatedUser = await User.findOneAndUpdate({
         _id: input._id
-      }, {$set:{
-        username: input?.username,
-        usersurname: input?.usersurname,
-        phone: input?.phone
-      }})
+      }, {
+        $set: {
+          username: input?.username,
+          usersurname: input?.usersurname,
+          phone: input?.phone
+        }
+      })
 
       await createLog(req.headers, "Kullanıcı Güncelleme", updatedUser._id, updatedUser.username)
       console.log(updatedUser);
@@ -64,7 +66,9 @@ module.exports = {
     },
     async loginUser(_, { input }, { res, req }) {
       const user = await User.findOne({ username: input?.username })
-      if (user && (bcrypt.compare(input?.password, user.password))) {
+      const dogrula = await bcrypt.compare(input?.password, user.password)
+ 
+      if (user && dogrula) {
         const token = jwt.sign({
           user_id: user._id,
           username: user.username,
@@ -82,6 +86,22 @@ module.exports = {
       } else {
         throw new ApolloError('Doğrulama Başarısız Oldu', 'Doğrulama Başarısız Oldu')
       }
+    },
+
+    updatePasswordSt: async (_,{ input }, { req }) => {
+
+        const userFromDb = await User.findOne({_id: input?._id})
+        const dogrula = await bcrypt.compare(input?.password, userFromDb.password)
+        if(input?.newpassword == input?.confirmPassword && dogrula){
+          const enPass = await bcrypt.hash(input?.newpassword, 10)
+          const updatedUser = await User.findOneAndUpdate({_id:input?._id}, {$set:{
+            password: enPass
+          }})
+          return updatedUser
+        }else{
+          throw new ApolloError('1 doğrulama sırasında bi hata oldu', ' 1 doğrulama sırasında bi hata oldu')
+        }
+
     }
   },
   Query: {

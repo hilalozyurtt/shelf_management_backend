@@ -36,6 +36,13 @@ input getUserInput {
     _id: String!
 }
 
+input UpdatePasswordStInput {
+    _id: String!
+    password: String!
+    newpassword: String!
+    confirmPassword: String!
+}
+
 type Query {
     user(input: getUserInput!): User
     logout: String
@@ -46,5 +53,6 @@ type Mutation {
     registerUser(input: RegisterInput): User
     loginUser(input: LoginInput): User
     updateUser(input: UpdateStInput): User
+    updatePasswordSt(input: UpdatePasswordStInput): User
 }
 `
