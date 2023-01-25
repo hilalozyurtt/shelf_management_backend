@@ -43,6 +43,7 @@ input UpdatePasswordStInput {
 }
 
 type Query {
+    getAllUsers: [User]
     user(input: getUserInput!): User
     logout: String
     checkToken: User

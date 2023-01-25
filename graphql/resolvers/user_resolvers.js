@@ -105,6 +105,10 @@ module.exports = {
     }
   },
   Query: {
+    getAllUsers: async (_, {input }, {req, res}) => {
+      const allUsers = await User.find({})
+      return allUsers
+    },
     user: async (_, { input }) => await User.findById(input?._id),
     logout: async (_, __, { res, req }) => {
       await res.cookie("token", "", { httpOnly: true, secure: true })
