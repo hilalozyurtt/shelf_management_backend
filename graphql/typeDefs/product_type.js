@@ -5,6 +5,7 @@ module.exports = gql`
 type Product {
     _id: String
     shelf_id: String
+    raf_no: String
     name: String
     arac: String
     ozellik: String

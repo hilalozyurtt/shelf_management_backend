@@ -1,5 +1,6 @@
 const { GraphQLError } = require("graphql")
 const Shelf = require("../../models/Shelf")
+const Structure = require("../../models/Structure")
 const createLog = require('../system_log_function')
 
 module.exports = {
@@ -26,10 +27,12 @@ module.exports = {
   Mutation: {
     createShelf: async (_, { input }, { req }) => {
       try {
+        const bina = await Structure.findOne({_id:input?.structure_id})
         const shelf = await Shelf.create({
           arac: input?.arac,
           raf_no: input?.raf_no,
           structure_id: input?.structure_id,
+          bina_no: bina.bina_no,
           active: true,
           created_at: new Date(),
           updated_at: new Date()
@@ -44,10 +47,12 @@ module.exports = {
     },
     updateShelf: async (_, { input }, { req }) => {
       try {
+        const bina = await Structure.findOne({_id:input?.structure_id})
         const shelf = await Shelf.findOneAndUpdate({ _id: input?._id, active: true }, {
           $set: {
             arac: input?.arac,
             raf_no: input?.raf_no,
+            bina_no: bina.bina_no,
             structure_id: input?.structure_id,
             updated_at: new Date()
           }

@@ -15,9 +15,12 @@ const userResolvers = require('./resolvers/user_resolvers')
 const systemLogTypeDefs = require('./typeDefs/system_log_type')
 const systemLogResolvers = require('./resolvers/system_log_resolver')
 
+const systemParamsTypeDefs = require('./typeDefs/system_params')
+const systemParamsResolvers = require('./resolvers/system_params_resolver')
+
 const schema = makeExecutableSchema({
-  typeDefs: [structureTypeDefs, shelfTypeDefs, productTypeDefs, userTypeDefs, systemLogTypeDefs],
-  resolvers: [structureResolvers, shelfResolvers, productResolvers, userResolvers, systemLogResolvers]
+  typeDefs: [structureTypeDefs, shelfTypeDefs, productTypeDefs, userTypeDefs, systemLogTypeDefs, systemParamsTypeDefs],
+  resolvers: [structureResolvers, shelfResolvers, productResolvers, userResolvers, systemLogResolvers, systemParamsResolvers]
 })
 
 module.exports = schema

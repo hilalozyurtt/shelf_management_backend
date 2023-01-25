@@ -52,6 +52,7 @@ module.exports = {
 	Mutation: {
 		createProduct: async (_, { input }, { req }) => {
 			try {
+				const shelf = await Shelf.findOne({_id: input?.shelf_id})
 				const createdProduct = await Product.create({
 					name: input?.name,
 					arac: input?.arac,
@@ -60,12 +61,13 @@ module.exports = {
 					oem_no: input?.oem_no,
 					orjinal_no: input?.orjinal_no,
 					shelf_id: input?.shelf_id,
+					raf_no: shelf.raf_no,
 					active: true,
 					created_at: new Date(),
 
 				})
 				await createLog(req.headers,"Ürün Oluşturma",createdProduct._id,createdProduct.name)
-
+				console.log(createdProduct);
 				return createdProduct
 			} catch (e) {
 				return new GraphqlError("Ürün oluşturulması başarısız.", "ürün oluşturalamadı")
@@ -73,6 +75,8 @@ module.exports = {
 		},
 		updateProduct: async (_, { input }, { req }) => {
 			try {
+				const shelf = await Shelf.findOne({_id: input?.shelf_id})
+				console.log(shelf);
 				const updateProduct = await Product.findOneAndUpdate({ _id: input?._id, active: true }, {
 					$set: {
 						name: input?.name,
@@ -82,6 +86,7 @@ module.exports = {
 						oem_no: input?.oem_no,
 						orjinal_no: input?.orjinal_no,
 						shelf_id: input?.shelf_id,
+						raf_no:shelf.raf_no,
 						updated_at: new Date()
 					}
 				})

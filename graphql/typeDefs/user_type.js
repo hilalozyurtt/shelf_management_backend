@@ -15,9 +15,8 @@ input RegisterInput{
     username: String!
     usersurname: String!
     phone: String
-    role: String
+    role: String!
     password: String!
-    confirmPassword: String!
 }
 
 input UpdateStInput{

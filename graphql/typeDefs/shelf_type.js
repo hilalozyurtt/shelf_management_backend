@@ -6,6 +6,7 @@ type Shelf {
     _id: String
     raf_no: String
     structure_id: String
+    bina_no: String
     active: Boolean
     created_at: String
     updated_at: String
