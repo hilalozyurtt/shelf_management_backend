@@ -67,7 +67,7 @@ module.exports = {
     async loginUser(_, { input }, { res, req }) {
       const user = await User.findOne({ username: input?.username })
       const dogrula = await bcrypt.compare(input?.password, user.password)
- 
+
       if (user && dogrula) {
         const token = jwt.sign({
           user_id: user._id,
@@ -88,24 +88,58 @@ module.exports = {
       }
     },
 
-    updatePasswordSt: async (_,{ input }, { req }) => {
+    updatePasswordSt: async (_, { input }, { req }) => {
 
-        const userFromDb = await User.findOne({_id: input?._id})
-        const dogrula = await bcrypt.compare(input?.password, userFromDb.password)
-        if(input?.newpassword == input?.confirmPassword && dogrula){
-          const enPass = await bcrypt.hash(input?.newpassword, 10)
-          const updatedUser = await User.findOneAndUpdate({_id:input?._id}, {$set:{
+      const userFromDb = await User.findOne({ _id: input?._id })
+      const dogrula = await bcrypt.compare(input?.password, userFromDb.password)
+      if (input?.newpassword == input?.confirmPassword && dogrula) {
+        const enPass = await bcrypt.hash(input?.newpassword, 10)
+        const updatedUser = await User.findOneAndUpdate({ _id: input?._id }, {
+          $set: {
             password: enPass
-          }})
-          return updatedUser
-        }else{
-          throw new ApolloError('1 doğrulama sırasında bi hata oldu', ' 1 doğrulama sırasında bi hata oldu')
-        }
+          }
+        })
+        return updatedUser
+      } else {
+        throw new ApolloError('1 doğrulama sırasında bi hata oldu', ' 1 doğrulama sırasında bi hata oldu')
+      }
 
-    }
+    },
+
+    updatePasswordUserAD: async (_, { input }, { req }) => {
+      console.log(input);
+      if (req.headers.cookie) {
+        const cookies = cookie.parse(req.headers.cookie)
+        let user;
+        if (cookies.token != "") {
+          user = await jwt.verify(cookies.token, "UNSAFE_STRING")
+        }
+        console.log(user);
+        if (user?.role == 'admin') {
+          const enPass = await bcrypt.hash(input?.new_password, 10)
+          const updatedUser = await User.findOneAndUpdate({ _id: input?.user_id }, { $set: { password: enPass } })
+
+          return updatedUser
+        } else {
+          return new ApolloError("Admin değilseniz değişiklik yapamazsınız")
+        }
+      } else {
+        return new ApolloError("Belirtilen alan için admin girişi yapmalısınız")
+      }
+    },
+
+    deleteUser: async (_, { input }, { req, res }) => {
+      try{
+        const user = await User.findOneAndDelete({_id: input._id})
+        return user
+      }catch(e){
+        return new ApolloError("Kullanıcı silinirken bir hata oluştu")
+      }
+    },
   },
+
   Query: {
-    getAllUsers: async (_, {input }, {req, res}) => {
+    getAllUsers: async (_, { input }, { req, res }) => {
       const allUsers = await User.find({})
       return allUsers
     },

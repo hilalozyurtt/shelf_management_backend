@@ -42,6 +42,11 @@ input UpdatePasswordStInput {
     confirmPassword: String!
 }
 
+input updatePasswordUserADInput {
+    user_id: String!
+    new_password: String!
+}
+
 type Query {
     getAllUsers: [User]
     user(input: getUserInput!): User
@@ -54,5 +59,7 @@ type Mutation {
     loginUser(input: LoginInput): User
     updateUser(input: UpdateStInput): User
     updatePasswordSt(input: UpdatePasswordStInput): User
+    updatePasswordUserAD(input: updatePasswordUserADInput): User
+    deleteUser(input: getUserInput): User
 }
 `
