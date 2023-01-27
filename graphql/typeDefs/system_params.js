@@ -5,6 +5,7 @@ module.exports = gql`
     _id: String
     key: String
     value: Boolean
+    variable: String
     active: Boolean
     created_at: String
     updated_at: String
@@ -16,11 +17,13 @@ module.exports = gql`
   input createSystemParamsInput {
     key: String!
     value: Boolean!
+    variable: String!
   }
 
   input updateSystemParamsInput {
     _id: String!
     value: Boolean!
+    variable: String!
   }
 
   type Query {

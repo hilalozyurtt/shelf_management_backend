@@ -1,8 +1,9 @@
 const { model, Schema } = require('mongoose');
 
 const systemParamsSchema = new Schema({
-  key:String,
+  key: String,
   value: Boolean,
+  variable: String,
   active: Boolean,
   created_at: String,
   updated_at: String

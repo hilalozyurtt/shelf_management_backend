@@ -20,6 +20,7 @@ module.exports = {
       const systemParams = await SystemParams.create({
         key: input?.key,
         value: input?.value,
+        variable: input?.variable,
         active: true,
         created_at: new Date(),
         updated_at: new Date()
@@ -32,6 +33,7 @@ module.exports = {
         $set:{
           key: input?.key,
           value: input?.value,
+          variable: input?.value,
           updated_at: new Date()
         }
       })
