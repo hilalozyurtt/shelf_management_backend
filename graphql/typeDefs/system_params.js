@@ -26,9 +26,14 @@ module.exports = gql`
     variable: String!
   }
 
+  input getSystemParamsByValueInput{
+    variable: String!
+  }
+
   type Query {
     getAllSystemParams: [SystemParams]
     getSystemParams(input: getSystemParamsInput): SystemParams
+    getSystemParamsByValue(input: getSystemParamsByValueInput ): SystemParams
   }
 
   type Mutation {

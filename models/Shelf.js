@@ -1,7 +1,7 @@
 const {model , Schema } = require('mongoose')
 
 const shelfSchema = new Schema({
-  raf_no: String,
+  raf_no: {type: String, unique: true },
   structure_id: String,
   bina_no: String,
   active: Boolean,

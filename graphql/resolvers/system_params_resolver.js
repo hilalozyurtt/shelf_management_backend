@@ -12,6 +12,10 @@ module.exports = {
       console.log(input);
       const param = await SystemParams.findOne({_id: input?._id, active: true})
       return param
+    },
+    getSystemParamsByValue: async(_, { input }, {req, res}) => {
+      const param = await SystemParams.findOne({variable: input?.variable})
+      return param
     }
   },
 

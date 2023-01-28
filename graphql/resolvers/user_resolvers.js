@@ -36,7 +36,7 @@ module.exports = {
     async registerUser(_, { input }, { req }) {
       const oldUser = await User.findOne({ username: input?.username })
       if (oldUser) {
-        throw new ApolloError(' User is already exist', 'user var')
+        throw new ApolloError('User is already exist', 'user var')
       }
       var enPass = await bcrypt.hash(input?.password, 10)
       const newUser = new User({
