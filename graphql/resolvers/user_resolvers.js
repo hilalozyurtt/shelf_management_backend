@@ -29,7 +29,6 @@ module.exports = {
       })
 
       await createLog(req.headers, "Kullanıcı Güncelleme", updatedUser._id, updatedUser.username)
-      console.log(updatedUser);
       return updatedUser
     },
 
@@ -99,6 +98,7 @@ module.exports = {
             password: enPass
           }
         })
+        await createLog(req.headers, "Şifre yenileme", updatedUser._id, updatedUser.username)
         return updatedUser
       } else {
         throw new ApolloError('1 doğrulama sırasında bi hata oldu', ' 1 doğrulama sırasında bi hata oldu')
@@ -107,18 +107,16 @@ module.exports = {
     },
 
     updatePasswordUserAD: async (_, { input }, { req }) => {
-      console.log(input);
       if (req.headers.cookie) {
         const cookies = cookie.parse(req.headers.cookie)
         let user;
         if (cookies.token != "") {
           user = await jwt.verify(cookies.token, "UNSAFE_STRING")
         }
-        console.log(user);
         if (user?.role == 'admin') {
           const enPass = await bcrypt.hash(input?.new_password, 10)
           const updatedUser = await User.findOneAndUpdate({ _id: input?.user_id }, { $set: { password: enPass } })
-
+          await createLog(req.headers, "Şifre yenileme (admin tarafından)", updatedUser._id, updatedUser.username)
           return updatedUser
         } else {
           return new ApolloError("Admin değilseniz değişiklik yapamazsınız")
@@ -131,6 +129,7 @@ module.exports = {
     deleteUser: async (_, { input }, { req, res }) => {
       try{
         const user = await User.findOneAndDelete({_id: input._id})
+        await createLog(req.headers, "Kullanıcı Silme (admin tarafından)", user._id, user.username)
         return user
       }catch(e){
         return new ApolloError("Kullanıcı silinirken bir hata oluştu")

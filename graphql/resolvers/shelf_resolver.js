@@ -1,6 +1,7 @@
 const { GraphQLError } = require("graphql")
 const Shelf = require("../../models/Shelf")
 const Structure = require("../../models/Structure")
+const Product = require("../../models/Product")
 const createLog = require('../system_log_function')
 
 module.exports = {
@@ -57,6 +58,7 @@ module.exports = {
             updated_at: new Date()
           }
         })
+        await Product.updateMany({active: true, shelf_id:input?._id}, {$set:{raf_no: input?.raf_no}})
         await createLog(req.headers,"Raf Güncelleme",shelf._id,shelf.raf_no)
         return shelf
       } catch (e) {

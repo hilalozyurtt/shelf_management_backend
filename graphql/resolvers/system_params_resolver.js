@@ -9,7 +9,6 @@ module.exports = {
       return allSystemParams
     },
     getSystemParams: async(_, { input }, { req, res }) => {
-      console.log(input);
       const param = await SystemParams.findOne({_id: input?._id, active: true})
       return param
     },
@@ -32,7 +31,6 @@ module.exports = {
       return systemParams
     },
     updateSystemParams: async(_, { input }, { req, res})=>{
-      console.log(input);
       const systemParams = await SystemParams.findOneAndUpdate({_id: input?._id},{
         $set:{
           key: input?.key,

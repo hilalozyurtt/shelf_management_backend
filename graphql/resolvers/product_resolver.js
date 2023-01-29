@@ -67,7 +67,6 @@ module.exports = {
 
 				})
 				await createLog(req.headers,"Ürün Oluşturma",createdProduct._id,createdProduct.name)
-				console.log(createdProduct);
 				return createdProduct
 			} catch (e) {
 				return new GraphqlError("Ürün oluşturulması başarısız.", "ürün oluşturalamadı")
@@ -76,7 +75,6 @@ module.exports = {
 		updateProduct: async (_, { input }, { req }) => {
 			try {
 				const shelf = await Shelf.findOne({_id: input?.shelf_id})
-				console.log(shelf);
 				const updateProduct = await Product.findOneAndUpdate({ _id: input?._id, active: true }, {
 					$set: {
 						name: input?.name,

@@ -1,4 +1,5 @@
 const Structure = require("../../models/Structure")
+const Shelf = require("../../models/Shelf")
 const { GraphQLError } = require('graphql')
 const createLog = require('../system_log_function')
 module.exports = {
@@ -46,6 +47,8 @@ module.exports = {
             }
           }
         )
+        await Shelf.updateMany({active: true, structure_id: input?._id}, {$set:{bina_no:input?.bina_no}})
+
         await createLog(req.headers,"Bina Güncelleme",updatedStructure._id,updatedStructure.bina_no)
         return updatedStructure
       }catch(e){
