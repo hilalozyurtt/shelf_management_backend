@@ -9,8 +9,7 @@ const schema = require("./graphql/schema");
   const app = express();
 
   const corsOptions = {
-    //productionda ilk url domainimiz olacak, ikinci url kaldırılacak
-    origin: ["http://localhost:3000", "https://studio.apollographql.com"],
+    origin: true,
     credentials: true,
   };
   app.use(cors(corsOptions));
