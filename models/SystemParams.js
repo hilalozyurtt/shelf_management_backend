@@ -5,6 +5,7 @@ const systemParamsSchema = new Schema({
   value: Boolean,
   variable: String,
   active: Boolean,
+  table: String,
   created_at: String,
   updated_at: String
 });

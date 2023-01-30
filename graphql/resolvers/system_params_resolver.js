@@ -15,6 +15,14 @@ module.exports = {
     getSystemParamsByValue: async(_, { input }, {req, res}) => {
       const param = await SystemParams.findOne({variable: input?.variable})
       return param
+    },
+    getSystemParamsByTable: async(_, { input }, { req, res }) => {
+      try{
+        const params = await SystemParams.find({active: true, value:false, table:input?.table})
+        return params
+      }catch(e){
+        throw new GraphQLError("İstek işlenirken bir hata oluştu!", "İstek işlenirken bir hata oluştu!")
+      }
     }
   },
 
@@ -24,6 +32,7 @@ module.exports = {
         key: input?.key,
         value: input?.value,
         variable: input?.variable,
+        table: input?.table,
         active: true,
         created_at: new Date(),
         updated_at: new Date()
@@ -35,7 +44,8 @@ module.exports = {
         $set:{
           key: input?.key,
           value: input?.value,
-          variable: input?.value,
+          table: input?.table,
+          variable: input?.variable,
           updated_at: new Date()
         }
       })
