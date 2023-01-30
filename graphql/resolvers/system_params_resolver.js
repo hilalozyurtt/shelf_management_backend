@@ -5,7 +5,7 @@ const createLog = require('../system_log_function')
 module.exports = {
   Query: {
     getAllSystemParams: async (_, {input}, {req, res}) => {
-      const allSystemParams = await SystemParams.find({acitve: true})
+      const allSystemParams = await SystemParams.find({active: true})
       return allSystemParams
     },
     getSystemParams: async(_, { input }, { req, res }) => {
