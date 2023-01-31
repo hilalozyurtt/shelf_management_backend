@@ -13,6 +13,8 @@ type Product {
     oem_no: String
     orjinal_no: String
     active: Boolean
+    structure_id: String,
+    bina_no: String
     created_at: String
     updated_at: String
 }

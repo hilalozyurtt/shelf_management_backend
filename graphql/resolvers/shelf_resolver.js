@@ -58,7 +58,7 @@ module.exports = {
             updated_at: new Date()
           }
         })
-        await Product.updateMany({active: true, shelf_id:input?._id}, {$set:{raf_no: input?.raf_no}})
+        await Product.updateMany({active: true, shelf_id:input?._id}, {$set:{raf_no: input?.raf_no, structure_id: input?.structure_id, bina_no: bina.bina_no}})
         await createLog(req.headers,"Raf Güncelleme",shelf._id,shelf.raf_no)
         return shelf
       } catch (e) {
