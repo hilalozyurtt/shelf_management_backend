@@ -9,7 +9,7 @@ module.exports = {
         const structure = await Structure.findOne({_id:input._id, active: true})
         return structure
       }catch(e){
-        return new GraphQLError("İstediğiniz Bina bulunamadı")
+        return new GraphQLError("İstediğiniz Depo bulunamadı")
       }
     },
     getAllStructures: async (_, { input }) => {
@@ -17,7 +17,7 @@ module.exports = {
         const allStructure = await Structure.find({active: true})
         return allStructure
       }catch(e){
-        return new GraphQLError("Binalar getirilemedi")
+        return new GraphQLError("Depolar getirilemedi")
       }
     }
   },
@@ -31,10 +31,10 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date()
         })
-        await createLog(req.headers,"Bina Oluşturma",createdStructure._id,createdStructure.bina_no)
+        await createLog(req.headers,"Depo Oluşturma",createdStructure._id,createdStructure.bina_no)
         return createdStructure
       }catch(e){
-        return new GraphQLError("Bina oluşturması başarısız. Lütfen doğru bilgileri girdiğinizden emin olun.")
+        return new GraphQLError("Depo oluşturması başarısız. Lütfen doğru bilgileri girdiğinizden emin olun.")
       }
     },
     updateStructure: async (_, { input }, { req }) => {
@@ -49,7 +49,7 @@ module.exports = {
         )
         await Shelf.updateMany({active: true, structure_id: input?._id}, {$set:{bina_no:input?.bina_no}})
 
-        await createLog(req.headers,"Bina Güncelleme",updatedStructure._id,updatedStructure.bina_no)
+        await createLog(req.headers,"Depo Güncelleme",updatedStructure._id,updatedStructure.bina_no)
         return updatedStructure
       }catch(e){
         return new GraphQLError("Güncelleme başarısız. Lütfen bilgileri kontrol ediniz.")
@@ -64,7 +64,7 @@ module.exports = {
             updated_at: new Date()
           }}
         )
-        await createLog(req.headers,"Bina Silme",deletedStructure._id,deletedStructure.bina_no)
+        await createLog(req.headers,"Depo Silme",deletedStructure._id,deletedStructure.bina_no)
         return deletedStructure
       }catch(e){
         return new GraphQLError("Silme başarısız oldu.")

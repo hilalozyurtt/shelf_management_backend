@@ -5,8 +5,8 @@ module.exports = gql`
 type Shelf {
     _id: String
     raf_no: String
-    #structure_id: String
-    #bina_no: String
+    structure_id: String
+    bina_no: String
     active: Boolean
     created_at: String
     updated_at: String
@@ -14,13 +14,13 @@ type Shelf {
 
 input createShelfInput {
     raf_no: String
-    #structure_id: String
+    structure_id: String
 }
 
 input updateShelfInput {
     _id: String!
     raf_no: String
-    #structure_id: String
+    structure_id: String
 }
 
 input getShelfInput {

@@ -13,8 +13,8 @@ type Product {
     oem_no: String
     orjinal_no: String
     active: Boolean
-    #structure_id: String,
-    #bina_no: String
+    structure_id: String,
+    bina_no: String
     created_at: String
     updated_at: String
 }
@@ -60,17 +60,17 @@ input getProductsOfShelfInput{
     finished_at: Int
 }
 
-#input getProductOfStructureInput{
-#    structure_id: String!
-#    started_at: Int
-#    finished_at: Int
-#}
+input getProductOfStructureInput{
+    structure_id: String!
+    started_at: Int
+    finished_at: Int
+}
 
 type Query {
     getAllProducts: [Product]
     getProduct(input: getProductInput!): Product
     getProductsOfShelf(input: getProductsOfShelfInput!): [Product]
-    #getProductsOfStructure(input: getProductOfStructureInput!): [Product]
+    getProductsOfStructure(input: getProductOfStructureInput!): [Product]
 }
 
 type Mutation {

@@ -2,7 +2,7 @@ const { GraphqlError } = require('graphql')
 const Product = require('../../models/Product')
 const Shelf = require('../../models/Shelf')
 const createLog = require('../system_log_function')
-//const Structure = require('../../models/Structure')
+const Structure = require('../../models/Structure')
 
 module.exports = {
 	Query: {
@@ -33,7 +33,7 @@ module.exports = {
 			}
 		},
 
-		/*getProductsOfStructure: async (_, { input }, { req }) => {
+		getProductsOfStructure: async (_, { input }, { req }) => {
 			try {
 				const shelfs = await Shelf.find({ active: true, structure_id: input?.structure_id })
 				let products = []
@@ -47,14 +47,14 @@ module.exports = {
 			} catch (e) {
 				return new GraphqlError("Parametreler hatalı.")
 			}
-		}*/
+		}
 	},
 
 	Mutation: {
 		createProduct: async (_, { input }, { req }) => {
 			try {
 				const shelf = await Shelf.findOne({_id: input?.shelf_id, active: true})
-				//const structure = await Structure.findOne({id: shelf._id, active: true})
+				const structure = await Structure.findOne({id: shelf._id, active: true})
 				const createdProduct = await Product.create({
 					name: input?.name,
 					arac: input?.arac,
@@ -63,8 +63,8 @@ module.exports = {
 					oem_no: input?.oem_no,
 					orjinal_no: input?.orjinal_no,
 					shelf_id: input?.shelf_id,
-					//structure_id: structure._id,
-					//bina_no: structure.bina_no,
+					structure_id: structure._id,
+					bina_no: structure.bina_no,
 					raf_no: shelf.raf_no,
 					active: true,
 					created_at: new Date(),
@@ -90,8 +90,8 @@ module.exports = {
 						orjinal_no: input?.orjinal_no,
 						shelf_id: input?.shelf_id,
 						raf_no:shelf.raf_no,
-						//structure_id: structure._id,
-						//bina_no: structure.bina_no,
+						structure_id: structure._id,
+						bina_no: structure.bina_no,
 						updated_at: new Date()
 					}
 				})
