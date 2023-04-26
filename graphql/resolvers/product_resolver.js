@@ -54,7 +54,7 @@ module.exports = {
 		createProduct: async (_, { input }, { req }) => {
 			try {
 				const shelf = await Shelf.findOne({_id: input?.shelf_id, active: true})
-				const structure = await Structure.findOne({id: shelf._id, active: true})
+				const structure = await Structure.findOne({_id: shelf.structure_id, active: true})
 				const createdProduct = await Product.create({
 					name: input?.name,
 					arac: input?.arac,
@@ -79,7 +79,7 @@ module.exports = {
 		updateProduct: async (_, { input }, { req }) => {
 			try {
 				const shelf = await Shelf.findOne({_id: input?.shelf_id, active: true})
-				//const structure = await Structure.findOne({_id: shelf.structure_id, active: true})
+				const structure = await Structure.findOne({_id: shelf.structure_id, active: true})
 				const updateProduct = await Product.findOneAndUpdate({ _id: input?._id, active: true }, {
 					$set: {
 						name: input?.name,

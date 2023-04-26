@@ -43,7 +43,7 @@ module.exports = {
 
         return shelf
       } catch (e) {
-        return new GraphQLError('Hata oluştu. Lütfen değerlerinizi kontrol edin.')
+        return new GraphQLError(e)
       }
     },
     updateShelf: async (_, { input }, { req }) => {
