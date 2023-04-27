@@ -118,7 +118,7 @@ module.exports = {
 				}else {
 					const updateProduct = await Product.updateOne({ _id: input?._id, active: true }, {
 						$inc: {
-							stock: -1
+							stock: -input?.stock
 						}
 					})
 	
