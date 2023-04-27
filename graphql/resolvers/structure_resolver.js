@@ -57,12 +57,8 @@ module.exports = {
     },
     deleteStructure: async (_, { input }, { req }) => {
       try{
-        const deletedStructure = await Structure.findOneAndUpdate(
-          {_id:input._id, active: true},
-          {$set:{
-            active: false,
-            updated_at: new Date()
-          }}
+        const deletedStructure = await Structure.deleteOne(
+          {_id:input._id},
         )
         await createLog(req.headers,"Depo Silme",deletedStructure._id,deletedStructure.bina_no)
         return deletedStructure
