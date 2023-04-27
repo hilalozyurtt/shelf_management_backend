@@ -66,8 +66,10 @@ module.exports = {
 					structure_id: structure._id,
 					bina_no: structure.bina_no,
 					raf_no: shelf.raf_no,
+					stock: input?.stock,
 					active: true,
 					created_at: new Date(),
+					updated_at: new Date()
 
 				})
 				await createLog(req.headers,"Ürün Oluşturma",createdProduct._id,createdProduct.name)
@@ -80,7 +82,7 @@ module.exports = {
 			try {
 				const shelf = await Shelf.findOne({_id: input?.shelf_id, active: true})
 				const structure = await Structure.findOne({_id: shelf.structure_id, active: true})
-				const updateProduct = await Product.findOneAndUpdate({ _id: input?._id, active: true }, {
+				const updateProduct = await Product.updateOne({ _id: input?._id, active: true }, {
 					$set: {
 						name: input?.name,
 						arac: input?.arac,
@@ -92,15 +94,44 @@ module.exports = {
 						raf_no:shelf.raf_no,
 						structure_id: structure._id,
 						bina_no: structure.bina_no,
+						stock: input?.stock,
 						updated_at: new Date()
 					}
 				})
-				
-				await createLog(req.headers,"Ürün Güncelleme",updateProduct._id,updateProduct.name)
 
-				return updateProduct
+				if(updateProduct.modifiedCount > 0){
+					const product = await Product.findOne({_id: input?._id})
+					await createLog(req.headers,"Ürün Güncelleme",product._id,product.name)
+					return product
+				}else{
+					throw new Error("Ürün güncellenemedi")
+				}
 			} catch (e) {
 				return new GraphqlError("Güncelleme yapılırken bir hata oldu.","Güncelleme yapılırken bir hata oldu.")
+			}
+		},
+		decStockOfProduct: async (_, { input }, { req }) => {
+			try {
+				const product = await Product.findOne({_id: input?._id, active: true})
+				if(product?.stock === 0 || product?.stock < 1){
+					throw new Error("Ürün stoğu sıfır daha fazla düşemez! " + e)
+				}else {
+					const updateProduct = await Product.updateOne({ _id: input?._id, active: true }, {
+						$inc: {
+							stock: -1
+						}
+					})
+	
+					if(updateProduct.modifiedCount > 0){
+						await createLog(req.headers,"Ürün Stok Düşme",product._id,product.name)
+						return product
+					} else {
+						throw new Error("Stok sıfırdan düşük olamaz veya bir hata oluştu.")
+					}
+				}
+
+			} catch (e) {
+				return new GraphqlError("Silinemedi.", "silinemedi")
 			}
 		},
 		deleteProduct: async (_, { input }, { req }) => {

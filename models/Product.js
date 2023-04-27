@@ -7,7 +7,16 @@ const productSchema = new Schema({
     ozellik2: String,
     oem_no: String,
     orjinal_no: String,
-    shelf_id: String,
+    shelf_id: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    stock:{
+        type: Number,
+        required: true,
+        min: [0, "Stok sıfırın altına düşemez!"]
+    },
     raf_no: String,
     structure_id: String,
     bina_no: String,

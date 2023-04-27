@@ -13,8 +13,9 @@ type Product {
     oem_no: String
     orjinal_no: String
     active: Boolean
-    structure_id: String,
+    structure_id: String
     bina_no: String
+    stock: Int
     created_at: String
     updated_at: String
 }
@@ -27,6 +28,7 @@ input createProductInput {
     ozellik2: String
     oem_no: String
     orjinal_no: String
+    stock: Int!
 
 }
 
@@ -39,6 +41,7 @@ input updateProductInput {
     ozellik2: String
     oem_no: String
     orjinal_no: String
+    stock: Int
 
 }
 
@@ -66,6 +69,11 @@ input getProductOfStructureInput{
     finished_at: Int
 }
 
+input decStockOfProductInput {
+    _id: String!
+    stock: Int!
+}
+
 type Query {
     getAllProducts: [Product]
     getProduct(input: getProductInput!): Product
@@ -77,5 +85,6 @@ type Mutation {
     createProduct(input: createProductInput!): Product
     updateProduct(input: updateProductInput!): Product
     deleteProduct(input: deleteInput!): Product
+    decStockOfProduct(input: decStockOfProductInput!): Product
 }
 `
