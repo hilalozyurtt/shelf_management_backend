@@ -13,7 +13,7 @@ module.exports = {
 			} catch (e) {
 				return new GraphqlError("Ürünler getirilirken bir hata oluştu.")
 			}
-		},
+		}, 
 
 		getProduct: async (_, { input }, { req }) => {
 			try {
